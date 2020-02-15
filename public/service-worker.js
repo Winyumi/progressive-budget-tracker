@@ -3,7 +3,11 @@ var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
   '/',
   '/styles.css',
-  '/index.js'
+  '/index.js',
+  '/manifest.json',
+  '/db.js',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png'
 ];
 
 
@@ -31,4 +35,3 @@ self.addEventListener("fetch", function(event) {
     })
   );
 });
-
