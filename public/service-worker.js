@@ -60,16 +60,43 @@ self.addEventListener("fetch", function(event) {
   );
 });
 */
+/*
 self.addEventListener('fetch', (e) => {
+  console.log(e.request);
   e.respondWith(
     caches.match(e.request).then((r) => {
       console.log('[Service Worker] Fetching resource: '+e.request.url);
       return r || fetch(e.request).then((response) => {
         return caches.open(CACHE_NAME).then((cache) => {
           console.log('[Service Worker] Caching new resource: '+e.request.url);
+          //if (!/^https?:$/i.test(new URL(request.url).protocol)) return;
           cache.put(e.request, response.clone());
           return response;
-        });
+        })
+      })
+      // fallback mechanism
+      .catch(function(err) {
+        console.log(err);
+        return caches.open(CACHE_NAME)
+          .then(function(cache) {
+            return cache.match('/');
+          });
+      });
+    })
+  );
+});
+*/
+
+self.addEventListener("fetch", event => {
+  console.log('[Service Worker] Fetching resource: ' + event.request.url);
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      return caches.match(event.request).then(response => {
+        if (response) {
+          return response;
+        } else if (event.request.headers.get("accept").includes("text/html")) {
+          return caches.match("/index.html");
+        }
       });
     })
   );
