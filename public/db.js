@@ -27,6 +27,7 @@ request.onerror = function(event) {
 };
 
 function saveRecord(record) {
+  console.log("[db.js] Saving record...");
   const transaction = db.transaction(["pending"], "readwrite");
   const store = transaction.objectStore("pending");
 
@@ -34,6 +35,7 @@ function saveRecord(record) {
 }
 
 function checkDatabase() {
+  console.log("[db.js] Checking database...");
   const transaction = db.transaction(["pending"], "readwrite");
   const store = transaction.objectStore("pending");
   const getAll = store.getAll();
@@ -48,7 +50,7 @@ function checkDatabase() {
           "Content-Type": "application/json"
         }
       })
-      .then(response => {        
+      .then(response => {
         return response.json();
       })
       .then(() => {
